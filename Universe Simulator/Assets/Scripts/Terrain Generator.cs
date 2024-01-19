@@ -40,3 +40,5 @@ public class TerrainGenerator : MonoBehaviour
 
     }
 }
+
+//https://www.youtube.com/watch?v=hNRFosb_3Tc
