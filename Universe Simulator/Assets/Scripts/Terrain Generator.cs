@@ -8,23 +8,27 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] int zSize = 10;
 
     private Mesh mesh;
+    private Vector3[] vertices;
 
     void Start()
     {
-        Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        CreateMesh();
     }
-
-
 
     void Update()
     {
         GenerateTerrain();
     }
 
+    void CreateMesh()
+    {
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+    }
+
     private void GenerateTerrain()
     {
-        Vector3[] vertices = new Vector3[(xSize + 1) * (zSize + 1)]; //This specifies the size of vertices array
+        vertices = new Vector3[(xSize + 1) * (zSize + 1)]; // Remove the data type
 
         int i = 0;
         for (int z = 0; z <= zSize; z++)
@@ -37,8 +41,16 @@ public class TerrainGenerator : MonoBehaviour
         }
 
         mesh.vertices = vertices;
+    }
 
+    private void OnDrawGizmos()
+    {
+        foreach (Vector3 pos in vertices)
+        {
+            Gizmos.DrawSphere(pos, 0.2f);
+        }
     }
 }
+
 
 //https://www.youtube.com/watch?v=hNRFosb_3Tc
