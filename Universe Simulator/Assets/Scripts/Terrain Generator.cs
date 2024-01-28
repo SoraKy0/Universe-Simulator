@@ -20,15 +20,15 @@ public class TerrainGenerator : MonoBehaviour
         GenerateTerrain();
     }
 
-    void CreateMesh()
+    void CreateMesh() //Makes Mesh
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    private void GenerateTerrain()
+    private void GenerateTerrain() //Creates Vectors
     {
-        vertices = new Vector3[(xSize + 1) * (zSize + 1)]; // Remove the data type
+        vertices = new Vector3[(xSize + 1) * (zSize + 1)]; 
 
         int i = 0;
         for (int z = 0; z <= zSize; z++)
@@ -43,7 +43,7 @@ public class TerrainGenerator : MonoBehaviour
         mesh.vertices = vertices;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() //Draws Spheres at each Vectors to show 
     {
         foreach (Vector3 pos in vertices)
         {
@@ -51,6 +51,3 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 }
-
-
-//https://www.youtube.com/watch?v=hNRFosb_3Tc
