@@ -7,6 +7,11 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] int xSize = 10;
     [SerializeField] int zSize = 10;
 
+    [SerializeField] float noiseScale = 0.05f;
+    [SerializeField] float heightMultiplier = 10;
+    [SerializeField] int xOffset;
+    [SerializeField] int zOffset;
+
     private Mesh mesh;
     private Vector3[] vertices;
 
@@ -26,8 +31,9 @@ public class TerrainGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
-    private void GenerateTerrain() //Creates vertices for the mesh
+    private void GenerateTerrain() 
     {
+        //Creates vertices for the mesh
         vertices = new Vector3[(xSize + 1) * (zSize + 1)]; 
 
         int i = 0;
@@ -35,36 +41,39 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                vertices[i] = new Vector3(x, 0, z);
+                float yPos = Mathf.PerlinNoise((x + xOffset) * noiseScale, (z + zOffset) * noiseScale) * heightMultiplier;
+                vertices[i] = new Vector3(x, yPos, z);
                 i++;
             }
         }
 
+        //Creates Triangles
         int[] triangles = new int[xSize * zSize * 6];
 
-        for(int z = 0; z < zSize: z++)
+        int vertex = 0;
+        int triangleIndex = 0;
+
+        for(int z = 0; z < zSize; z++)
         {
-            for(int x = 0: x < xSize; xSize++)     
+            for(int x = 0; x < xSize; x++)     
             {
-                triangles[0] = 0;
-                triangles[0] = 0;
-                triangles[0] = 0;
+                triangles[triangleIndex + 0] = vertex + 0;
+                triangles[triangleIndex + 1] = vertex + xSize + 1;
+                triangles[triangleIndex + 2] = vertex + 1;
 
-                triangles[0] = 0;
-                triangles[0] = 0;
-                triangles[0] = 0;
+                triangles[triangleIndex + 3] = vertex + 1;
+                triangles[triangleIndex + 4] = vertex + xSize + 1;
+                triangles[triangleIndex + 5] = vertex + xSize + 2;
+
+                vertex++;
+                triangleIndex += 6;
             }       
+            vertex++;
         }
-
+        mesh.Clear();
 
         mesh.vertices = vertices;
-    }
-
-    private void OnDrawGizmos() //Draws Spheres at each vertices to show 
-    {
-        foreach (Vector3 pos in vertices)
-        {
-            Gizmos.DrawSphere(pos, 0.2f);
-        }
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
     }
 }
