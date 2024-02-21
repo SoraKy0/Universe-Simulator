@@ -264,7 +264,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c587b3a01415ba24f8b3d80db3214139, type: 2}
+  - {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -298,10 +298,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b189097b26002a54889f34518ccc182b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 10
-  zSize: 10
+  xSize: 100
+  zSize: 100
   noiseScale: 0.05
   heightMultiplier: 10
+  xOffset: 0
+  zOffset: 0
+  TerrainGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.4513507, b: 1, a: 1}
+    key1: {r: 0, g: 0.7445178, b: 1, a: 1}
+    key2: {r: 1, g: 0.9372188, b: 0, a: 0}
+    key3: {r: 0.9466404, g: 1, b: 0, a: 0}
+    key4: {r: 0.37585676, g: 1, b: 0.32941175, a: 0}
+    key5: {r: 0.046572767, g: 0.6132076, b: 0, a: 0}
+    key6: {r: 0.101053655, g: 0.63530976, b: 0.05714215, a: 0}
+    key7: {r: 1, g: 1, b: 1, a: 0}
+    ctime0: 2120
+    ctime1: 7132
+    ctime2: 18119
+    ctime3: 23516
+    ctime4: 31033
+    ctime5: 44718
+    ctime6: 52428
+    ctime7: 64957
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 8
+    m_NumAlphaKeys: 2
+  mat: {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}
 --- !u!4 &714568608
 Transform:
   m_ObjectHideFlags: 0

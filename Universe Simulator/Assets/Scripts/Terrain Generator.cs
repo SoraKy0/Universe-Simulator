@@ -12,17 +12,48 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] int xOffset;
     [SerializeField] int zOffset;
 
+    [SerializeField] Gradient TerrainGradient;
+    [SerializeField] Material mat;
+
     private Mesh mesh;
+    private Texture2D gradientTexture;
+
     private Vector3[] vertices;
 
     void Start()
     {
         CreateMesh();
+        GradientToTexture();
+
     }
 
     void Update()
     {
         GenerateTerrain();
+        GradientToTexture();
+
+        float minTerrainHeight = mesh.bounds.min.y + transform.position.y - 0.1f;
+        float maxTerrainHeight = mesh.bounds.max.y + transform.position.y + 0.1f;
+
+        mat.SetTexture("terrainGradient", gradientTexture);
+
+        mat.SetFloat("minTerrainHeight", minTerrainHeight);
+        mat.SetFloat("maxTerrainHeight", maxTerrainHeight);
+    }
+
+    private void GradientToTexture()
+    {
+        gradientTexture = new Texture2D(1,100);
+        Color[] pixleColours = new Color[100];
+
+        for (int i = 0; i < 100; i++)
+        {
+            pixleColours[i] = TerrainGradient.Evaluate((float)i / 100);
+        }
+
+        gradientTexture.SetPixels(pixleColours);
+        gradientTexture.Apply();
+
     }
 
     void CreateMesh() //Makes Mesh
