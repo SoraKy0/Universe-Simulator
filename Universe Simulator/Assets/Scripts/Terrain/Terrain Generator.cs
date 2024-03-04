@@ -17,7 +17,7 @@ public class TerrainGenerator : MonoBehaviour
 
     [SerializeField] Gradient TerrainGradient;
     [SerializeField] Material mat;
-    [SerializeField] PhysicMaterial physicMaterial; // Physics material
+
 
     private Mesh mesh;
     private Texture2D gradientTexture;
@@ -107,12 +107,11 @@ public class TerrainGenerator : MonoBehaviour
         }
 
         mesh.Clear();
+
         mesh.vertices = vertices;
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-
-        // Assign physics material to the MeshCollider
-        GetComponent<MeshCollider>().material = physicMaterial;
+        
+        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 }

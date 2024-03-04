@@ -339,7 +339,6 @@ MonoBehaviour:
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}
-  physicMaterial: {fileID: 13400000, guid: 84c89b4169355d94facf18aef693fec7, type: 2}
 --- !u!4 &714568608
 Transform:
   m_ObjectHideFlags: 0
@@ -430,8 +429,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.56
+  m_Height: 2.15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &731442392
@@ -646,10 +645,10 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 2.06
   m_Radius: 0.51
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.7
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -667,6 +666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1581966507}
   movementSpeed: 100
+  gravity: -5
 --- !u!1 &1984015017
 GameObject:
   m_ObjectHideFlags: 0

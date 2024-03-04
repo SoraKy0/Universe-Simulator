@@ -7,7 +7,10 @@ public class PlayerMovement : MonoBehaviour
 
     public CharacterController controller;
 
-    public float movementSpeed = 10f;
+    public float movementSpeed = 100f;
+    public float gravity = -5f;
+
+    Vector3 velocity;
 
     void Update()
     {
@@ -17,5 +20,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         
         controller.Move(move * movementSpeed * Time.deltaTime);
+
+        velocity.y += gravity * Time.deltaTime;
+
+        controller.Move(velocity * Time.deltaTime);
     }
 }
