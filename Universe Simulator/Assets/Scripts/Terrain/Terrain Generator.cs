@@ -9,8 +9,10 @@ public class TerrainGenerator : MonoBehaviour
 
     [SerializeField] float noiseScale = 0.05f;
     [SerializeField] float heightMultiplier = 2;
+
     [SerializeField] int xOffset;
     [SerializeField] int zOffset;
+
     [SerializeField] int octavesAmount = 1;
     [SerializeField] float lacunarity = 1f;
     [SerializeField] float persistence = 1f;
@@ -21,13 +23,15 @@ public class TerrainGenerator : MonoBehaviour
 
     private Mesh mesh;
     private Texture2D gradientTexture;
-
     private Vector3[] vertices;
+
+    private float[,] falloffMap;
 
     void Start()
     {
         CreateMesh();
         GradientToTexture();
+        GenerateFalloffMap();
         GenerateTerrain();
     }
 
@@ -68,6 +72,11 @@ public class TerrainGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
+    void GenerateFalloffMap()
+    {
+        falloffMap = FalloffForTerrain.GenerateFalloffMap(xSize + 1);
+    }
+
     private void GenerateTerrain()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
@@ -83,6 +92,11 @@ public class TerrainGenerator : MonoBehaviour
                     float amplitude = Mathf.Pow(persistence, y);
                     yPos += Mathf.PerlinNoise((x + xOffset) * noiseScale * frequency, (z + zOffset) * noiseScale * frequency) * amplitude;
                 }
+
+                // Apply falloff map
+                float falloffValue = falloffMap[x, z];
+                yPos -= falloffValue;
+
                 yPos *= heightMultiplier;
                 vertices[i] = new Vector3(x, yPos, z);
                 i++;
@@ -111,7 +125,7 @@ public class TerrainGenerator : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
-        
+
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 }

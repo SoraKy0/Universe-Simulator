@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 714568606}
   - component: {fileID: 714568605}
   - component: {fileID: 714568609}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,33 +299,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b189097b26002a54889f34518ccc182b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 200
-  zSize: 200
+  xSize: 100
+  zSize: 100
   noiseScale: 0.05
-  heightMultiplier: 10
+  heightMultiplier: 20
   xOffset: 0
   zOffset: 0
-  octavesAmount: 1
-  lacunarity: 1
-  persistence: 1
+  octavesAmount: 3
+  lacunarity: 4.5
+  persistence: 0.15
   TerrainGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0.4513507, b: 1, a: 1}
+    key0: {r: 0, g: 0.45098042, b: 1, a: 1}
     key1: {r: 0, g: 0.7445178, b: 1, a: 1}
     key2: {r: 1, g: 0.9372188, b: 0, a: 0}
     key3: {r: 0.9466404, g: 1, b: 0, a: 0}
-    key4: {r: 0.37585676, g: 1, b: 0.32941175, a: 0}
-    key5: {r: 0.046572767, g: 0.6132076, b: 0, a: 0}
-    key6: {r: 0.101053655, g: 0.63530976, b: 0.05714215, a: 0}
-    key7: {r: 1, g: 1, b: 1, a: 0}
-    ctime0: 2120
-    ctime1: 7132
-    ctime2: 18119
-    ctime3: 23516
-    ctime4: 31033
-    ctime5: 44718
-    ctime6: 52428
-    ctime7: 64957
+    key4: {r: 0.13918382, g: 0.6226415, b: 0.10279457, a: 0}
+    key5: {r: 0.025094317, g: 0.3584906, b: 0, a: 0}
+    key6: {r: 1, g: 1, b: 1, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 5397
+    ctime1: 15806
+    ctime2: 21395
+    ctime3: 23708
+    ctime4: 28720
+    ctime5: 50308
+    ctime6: 64957
+    ctime7: 0
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -336,7 +336,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 8
+    m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}
 --- !u!4 &714568608
@@ -617,7 +617,7 @@ Transform:
   m_GameObject: {fileID: 1581966504}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 50, z: 0}
+  m_LocalPosition: {x: 50, y: 50, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -665,8 +665,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1581966507}
-  movementSpeed: 100
-  gravity: -5
+  movementSpeed: 60
+  gravity: -50
+  jumpHeight: 5
+  groundCheck: {fileID: 1984015018}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1984015017
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +698,7 @@ Transform:
   m_GameObject: {fileID: 1984015017}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.016, z: 0}
+  m_LocalPosition: {x: 0, y: -1.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
