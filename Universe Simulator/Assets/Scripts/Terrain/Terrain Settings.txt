@@ -1,0 +1,16 @@
+xSize = 120
+ZSize = 120   around 40 fps with gtx 1650 and i3 10 gen
+
+Noise scale = 0.02 - 0.03
+
+Height Multiplier = -8 - 10
+
+
+X Offset = 0 - 1000
+Z Offset = 0 - 1000
+
+Octaves = 4
+
+Lacunarity = 1.4 - 2
+
+Persistence = 0.6 - 0.4

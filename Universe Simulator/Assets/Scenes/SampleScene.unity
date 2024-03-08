@@ -332,15 +332,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b189097b26002a54889f34518ccc182b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 150
-  zSize: 150
-  noiseScale: 0.05
-  heightMultiplier: 20
+  xSize: 120
+  zSize: 120
+  noiseScale: 0.03
+  heightMultiplier: 6.5
   xOffset: 0
   zOffset: 0
-  octavesAmount: 3
-  lacunarity: 4.5
-  persistence: 0.15
+  octavesAmount: 4
+  lacunarity: 1.81
+  persistence: 0.52
   TerrainGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.45098042, b: 1, a: 1}
@@ -356,7 +356,7 @@ MonoBehaviour:
     ctime2: 21395
     ctime3: 23708
     ctime4: 28720
-    ctime5: 50308
+    ctime5: 58789
     ctime6: 64957
     ctime7: 0
     atime0: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: -1
+    m_ColorSpace: 0
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}

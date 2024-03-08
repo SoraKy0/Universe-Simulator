@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
-    [SerializeField] int xSize = 10;
-    [SerializeField] int zSize = 10;
+    [SerializeField] int xSize = 120;
+    [SerializeField] int zSize = 120;
 
-    [SerializeField] float noiseScale = 0.05f;
-    [SerializeField] float heightMultiplier = 2;
+    [SerializeField] float noiseScale;
+    [SerializeField] float heightMultiplier;
 
     [SerializeField] int xOffset;
     [SerializeField] int zOffset;
 
-    [SerializeField] int octavesAmount = 1;
-    [SerializeField] float lacunarity = 1f;
-    [SerializeField] float persistence = 1f;
+    [SerializeField] int octavesAmount = 4;
+    [SerializeField] float lacunarity;
+    [SerializeField] float persistence;
 
     [SerializeField] Gradient TerrainGradient;
     [SerializeField] Material mat;
@@ -33,6 +33,13 @@ public class TerrainGenerator : MonoBehaviour
         GradientToTexture();
         GenerateFalloffMap();
         GenerateTerrain();
+
+        noiseScale = Random.Range(0.02f, 0.03f);
+        heightMultiplier = Random.Range(-8f, 10f);
+        xOffset = Random.Range(0, 1000);
+        zOffset = Random.Range(0, 1000);
+        lacunarity = Random.Range(1.4f, 2f);
+        persistence = Random.Range(0.6f, 0.4f);
     }
 
     void Update()
