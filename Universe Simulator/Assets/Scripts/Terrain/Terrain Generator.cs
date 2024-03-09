@@ -38,7 +38,7 @@ public class TerrainGenerator : MonoBehaviour
         xOffset = Random.Range(0, 1000);
         zOffset = Random.Range(0, 1000);
         lacunarity = Random.Range(1.4f, 2f);
-        persistence = Random.Range(0.6f, 0.4f);
+        persistence = Random.Range(0.5f, 0.4f);
 
         float heightMin = -8f;
         float heightMax = 10f;
