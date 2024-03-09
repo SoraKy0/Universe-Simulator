@@ -26,10 +26,10 @@ public class FalloffForTerrain : MonoBehaviour
     }
 
     private static float Evaluate(float value, float maxDistance)
-    {
-        float a = 3;
-        float b = 2.2f;
+{
+    float steepness = 4f; 
+    float falloffStart = 4f; 
 
-        return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
-    }
+    return Mathf.Pow(value, steepness) / (Mathf.Pow(value, steepness) + Mathf.Pow(falloffStart - falloffStart * value, steepness));
+}
 }

@@ -35,11 +35,17 @@ public class TerrainGenerator : MonoBehaviour
         GenerateTerrain();
 
         noiseScale = Random.Range(0.02f, 0.03f);
-        heightMultiplier = Random.Range(-8f, 10f);
         xOffset = Random.Range(0, 1000);
         zOffset = Random.Range(0, 1000);
         lacunarity = Random.Range(1.4f, 2f);
         persistence = Random.Range(0.6f, 0.4f);
+
+        float heightMin = -8f;
+        float heightMax = 10f;
+        do
+        {
+            heightMultiplier = Random.Range(heightMin, heightMax);
+        } while (heightMultiplier > -3.9f && heightMultiplier < 3);
     }
 
     void Update()
