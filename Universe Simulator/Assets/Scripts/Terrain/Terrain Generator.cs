@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Connection;
+using FishNet.Object;
+using FishNet.Example.ColliderRollbacks;
+using FishNet.Object.Synchronizing;
 
-public class TerrainGenerator : MonoBehaviour
+public class TerrainGenerator : NetworkBehaviour
 {
     [SerializeField] int xSize = 120;
     [SerializeField] int zSize = 120;
 
-    [SerializeField] float noiseScale;
-    [SerializeField] float heightMultiplier;
-
-    [SerializeField] int xOffset;
-    [SerializeField] int zOffset;
-
     [SerializeField] int octavesAmount = 4;
-    [SerializeField] float lacunarity;
-    [SerializeField] float persistence;
 
     [SerializeField] Gradient TerrainGradient;
     [SerializeField] Material mat;
@@ -27,25 +23,39 @@ public class TerrainGenerator : MonoBehaviour
 
     private float[,] falloffMap;
 
+    [SyncVar] public float noiseScale;
+    [SyncVar] public int xOffset;
+    [SyncVar] public int zOffset;
+    [SyncVar] public float lacunarity;
+    [SyncVar] public float persistence;
+    [SyncVar] public float heightMultiplier;
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (base.IsServer)
+        {
+            noiseScale = Random.Range(0.02f, 0.03f);
+            xOffset = Random.Range(0, 1000);
+            zOffset = Random.Range(0, 1000);
+            lacunarity = Random.Range(1.4f, 2f);
+            persistence = Random.Range(0.5f, 0.4f);
+
+            float heightMin = -8f;
+            float heightMax = 10f;
+            do
+            {
+                heightMultiplier = Random.Range(heightMin, heightMax);
+            } while (heightMultiplier > -3.9f && heightMultiplier < 3);
+        }
+    }
+
     void Start()
     {
         CreateMesh();
         GradientToTexture();
         GenerateFalloffMap();
         GenerateTerrain();
-
-        noiseScale = Random.Range(0.02f, 0.03f);
-        xOffset = Random.Range(0, 1000);
-        zOffset = Random.Range(0, 1000);
-        lacunarity = Random.Range(1.4f, 2f);
-        persistence = Random.Range(0.5f, 0.4f);
-
-        float heightMin = -8f;
-        float heightMax = 10f;
-        do
-        {
-            heightMultiplier = Random.Range(heightMin, heightMax);
-        } while (heightMultiplier > -3.9f && heightMultiplier < 3);
     }
 
     void Update()

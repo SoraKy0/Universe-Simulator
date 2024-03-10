@@ -476,6 +476,7 @@ GameObject:
   - component: {fileID: 714568606}
   - component: {fileID: 714568605}
   - component: {fileID: 714568609}
+  - component: {fileID: 714568611}
   m_Layer: 3
   m_Name: Terrain Generator
   m_TagString: Untagged
@@ -545,15 +546,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b189097b26002a54889f34518ccc182b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 714568611}
+  _networkObjectCache: {fileID: 714568611}
   xSize: 120
   zSize: 120
-  noiseScale: 0.03
-  heightMultiplier: 6.5
-  xOffset: 0
-  zOffset: 0
   octavesAmount: 4
-  lacunarity: 1.81
-  persistence: 0.52
   TerrainGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.45098042, b: 1, a: 1}
@@ -585,6 +583,12 @@ MonoBehaviour:
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   mat: {fileID: 2100000, guid: db422e52e6c2c6d40a4646fe77809e83, type: 2}
+  noiseScale: 0
+  xOffset: 0
+  zOffset: 0
+  lacunarity: 1.81
+  persistence: 0.52
+  heightMultiplier: 6.5
 --- !u!4 &714568608
 Transform:
   m_ObjectHideFlags: 0
@@ -634,6 +638,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca2f28f5de42fb43ae32b6f7d8e9df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &714568611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714568604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 714568607}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 584410112
+  <SceneId>k__BackingField: 2510022321667897582
+  <AssetPathHash>k__BackingField: 0
 --- !u!1 &898679908
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,13 +861,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.12634043, y: 0.38027352, z: -0.051900014, w: 0.9147331}
+  m_LocalPosition: {x: 0, y: 12.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.7, y: 45.157, z: 0.068}
 --- !u!1001 &1030440673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1283,7 +1320,7 @@ Transform:
   m_GameObject: {fileID: 1602072445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 140, y: 25, z: 140}
+  m_LocalPosition: {x: 110, y: 25, z: 110}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -42,7 +42,7 @@ public class PlayerController : NetworkBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
-        // Lock cursor to screen
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -51,10 +51,10 @@ public class PlayerController : NetworkBehaviour
     {
         bool isRunning = false;
 
-        // Press Left Shift to run
+        
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        // We are grounded, so recalculate move direction based on axis
+        
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -77,10 +77,10 @@ public class PlayerController : NetworkBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-        // Move the controller
+        
         characterController.Move(moveDirection * Time.deltaTime);
 
-        // Player and Camera rotation
+        
         if (canMove && playerCamera != null)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
