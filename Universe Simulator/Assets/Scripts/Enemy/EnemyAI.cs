@@ -1,34 +1,40 @@
-using FishNet.Object;
 using UnityEngine;
+using FishNet;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 
 public class EnemyAI : NetworkBehaviour
 {
-    public float speed = 5f; // The speed at which the enemy moves
-    private Transform player; // Reference to the player's transform
+    [SyncVar]
+    private Transform targetPlayer;
+
+    public float speed = 5f;
 
     void Update()
     {
-        // Only run this code on the server
-        if (!IsServer)
+        if (!IsClient)
             return;
 
-        // Find the player by tag
-        if (player == null)
+        if (targetPlayer == null)
+            FindPlayer();
+        else
+            MoveTowardsPlayer();
+    }
+
+    private void FindPlayer()
+    {
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
         {
-            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-            if (playerObject != null)
-            {
-                player = playerObject.transform;
-            }
+            targetPlayer = playerObject.transform;
         }
+    }
 
-        // If the player is found, move towards the player
-        if (player != null)
+    private void MoveTowardsPlayer()
+    {
+        if (targetPlayer != null)
         {
-            // Calculate direction towards player
-            Vector3 direction = (player.position - transform.position).normalized;
-
-            // Move enemy towards the player
+            Vector3 direction = (targetPlayer.position - transform.position).normalized;
             transform.position += direction * speed * Time.deltaTime;
         }
     }
