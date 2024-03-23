@@ -1,13 +1,12 @@
 using UnityEngine;
 using FishNet;
 using FishNet.Object;
-using FishNet.Object.Synchronizing;
 
 public class EnemyAI : NetworkBehaviour
 {
-    [SyncVar]
-    private Transform targetPlayer;
+    [SerializeField] private float playerDetectionRange = 10f; 
 
+    private Transform targetPlayer;
     public float speed = 5f;
 
     void Update()
@@ -15,19 +14,29 @@ public class EnemyAI : NetworkBehaviour
         if (!IsClient)
             return;
 
-        if (targetPlayer == null)
-            FindPlayer();
+        if (targetPlayer == null || Vector3.Distance(transform.position, targetPlayer.position) > playerDetectionRange)
+            FindClosestPlayer();
         else
             MoveTowardsPlayer();
     }
 
-    private void FindPlayer()
+    private void FindClosestPlayer()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float shortestDistance = Mathf.Infinity;
+        Transform nearestPlayer = null;
+
+        foreach (GameObject player in players)
         {
-            targetPlayer = playerObject.transform;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer < shortestDistance)
+            {
+                shortestDistance = distanceToPlayer;
+                nearestPlayer = player.transform;
+            }
         }
+
+        targetPlayer = nearestPlayer;
     }
 
     private void MoveTowardsPlayer()
