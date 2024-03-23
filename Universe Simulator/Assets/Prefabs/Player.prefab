@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7011039839663005844}
   - component: {fileID: 6596263061781965513}
   - component: {fileID: 7096284918531366994}
+  - component: {fileID: 4858054385028989777}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -107,6 +108,33 @@ CapsuleCollider:
   m_Height: 2.15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &4858054385028989777
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380902202721716777}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3211188090839536887
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +253,7 @@ GameObject:
   - component: {fileID: 9151613570657787888}
   - component: {fileID: 6550144038268756968}
   - component: {fileID: 238704054914539415}
+  - component: {fileID: 1648233336120728579}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -377,3 +406,18 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!114 &1648233336120728579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284263137092760947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc0a272a5908b847a5bf4366594003a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthAmount: 100
+  healingAmount: 5
+  healingTime: 5
