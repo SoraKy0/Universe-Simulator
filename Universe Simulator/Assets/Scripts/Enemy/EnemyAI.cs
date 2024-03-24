@@ -4,7 +4,7 @@ using FishNet.Object;
 
 public class EnemyAI : NetworkBehaviour
 {
-    [SerializeField] private float playerDetectionRange = 10f; 
+    [SerializeField] private float playerDetectionRange = 10f;
 
     private Transform targetPlayer;
     public float speed = 5f;

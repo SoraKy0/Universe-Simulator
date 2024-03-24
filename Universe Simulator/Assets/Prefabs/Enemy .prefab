@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 6318522772818053324}
   - component: {fileID: 882520720819908987}
   m_Layer: 0
-  m_Name: 'Test Enemy '
-  m_TagString: Untagged
+  m_Name: 'Enemy '
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,7 +123,8 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 882520720819908987}
   _networkObjectCache: {fileID: 882520720819908987}
-  speed: 8
+  playerDetectionRange: 15
+  speed: 10
 --- !u!54 &6318522772818053324
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -183,4 +184,4 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 584410112
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 9090244952756917383
+  <AssetPathHash>k__BackingField: 2107740463461976075
