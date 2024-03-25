@@ -26,31 +26,43 @@ public class HealthManager : NetworkBehaviour
     public float HealingTime = 5f;
     private float nextHealingTime = 0f;
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        {
+            if (IsClient)
+            {
+                instantiatedHealthBar = Instantiate(healthBarPrefab, transform);
+                UpdateHealthBar();
+            }
+        }
+    }
+
     void Start()
     {
-        if (IsClient)
-        {
-            instantiatedHealthBar = Instantiate(healthBarPrefab, transform);
-            UpdateHealthBar();
-        }
+
     }
 
     void Update()
     {
-        if (IsClient)
+        base.OnStartClient();
         {
-            if (HealthAmount <= 0)
+            if (IsClient)
             {
-                Debug.Log("DEAD");
-                return;
-            }
+                if (HealthAmount <= 0)
+                {
+                    Debug.Log("DEAD");
+                    return;
+                }
 
-            if (HealthAmount < 100 && Time.time >= nextHealingTime)
-            {
-                Heal(HealingAmount);
-                nextHealingTime = Time.time + HealingTime;
+                if (HealthAmount < 100 && Time.time >= nextHealingTime)
+                {
+                    Heal(HealingAmount);
+                    nextHealingTime = Time.time + HealingTime;
+                }
             }
         }
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -61,7 +73,7 @@ public class HealthManager : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+
     public void TakeDamageClient(float damage)
     {
         if (IsClient)
@@ -71,10 +83,10 @@ public class HealthManager : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+
     public void HealServerRpc(float healingAmount)
     {
-        if (IsOwner)
+        if (IsClient)
         {
             HealthAmount += healingAmount;
             HealthAmount = Mathf.Min(HealthAmount, 100);
@@ -95,7 +107,7 @@ public class HealthManager : NetworkBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (IsOwner)
+        if (IsClient)
         {
             TakeDamageClient(damage);
         }
@@ -103,7 +115,7 @@ public class HealthManager : NetworkBehaviour
 
     public void Heal(float healingAmount)
     {
-        if (IsOwner)
+        if (IsClient)
         {
             HealServerRpc(healingAmount);
         }

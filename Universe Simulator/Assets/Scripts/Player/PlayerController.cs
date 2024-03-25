@@ -12,6 +12,19 @@ public class PlayerController : NetworkBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
+    public Material[] playerMaterials; 
+
+    Color[] playerColors = new Color[]
+    {
+        new Color(1.0f, 0.0f, 0.0f),    // Red
+        new Color(0.0f, 1.0f, 0.0f),    // Green
+        new Color(0.0f, 0.0f, 1.0f),    // Blue
+        new Color(1.0f, 1.0f, 0.0f),    // Yellow
+        new Color(1.0f, 0.0f, 1.0f),    // Magenta
+        new Color(0.0f, 1.0f, 1.0f),    // Cyan
+        new Color(0.5f, 0.0f, 0.5f),    // Purple
+    };
+
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -30,19 +43,33 @@ public class PlayerController : NetworkBehaviour
         {
             playerCamera = Camera.main;
             playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
-            playerCamera.transform.SetParent(transform);
+            playerCamera.transform.SetParent(transform);    
+            
         }
         else
         {
             gameObject.GetComponent<PlayerController>().enabled = false;
         }
+
+        if (base.IsClient)
+        {
+            // Assign a random color to the player
+            if (playerMaterials != null && playerMaterials.Length > 0)
+            {
+                Renderer renderer = GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                {
+                    int randomIndex = Random.Range(0, playerColors.Length);
+                    renderer.material.color = playerColors[randomIndex];
+                }
+            }
+        }
+
     }
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -50,10 +77,7 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         bool isRunning = false;
-
-
         isRunning = Input.GetKey(KeyCode.LeftShift);
-
 
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -77,9 +101,7 @@ public class PlayerController : NetworkBehaviour
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-
         characterController.Move(moveDirection * Time.deltaTime);
-
 
         if (canMove && playerCamera != null)
         {

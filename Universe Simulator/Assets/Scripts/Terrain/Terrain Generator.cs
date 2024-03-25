@@ -100,38 +100,53 @@ public class TerrainGenerator : NetworkBehaviour
         falloffMap = FalloffForTerrain.GenerateFalloffMap(xSize + 1);
     }
 
+    
+    //Generates the terrain geometry using Perlin noise and falloff map.
     private void GenerateTerrain()
     {
+        // Initialize array to hold vertices
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
         int i = 0;
+
+        // Loop through each grid point to create vertices
         for (int z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
                 float yPos = 0;
+
+                // Use Perlin noise to calculate terrain height
                 for (int y = 0; y < octavesAmount; y++)
                 {
                     float frequency = Mathf.Pow(lacunarity, y);
                     float amplitude = Mathf.Pow(persistence, y);
-                    yPos += Mathf.PerlinNoise((x + xOffset) * noiseScale * frequency, (z + zOffset) * noiseScale * frequency) * amplitude;
+                    yPos += Mathf.PerlinNoise((x + xOffset) * noiseScale * frequency,
+                                              (z + zOffset) * noiseScale * frequency) * amplitude;
                 }
 
-                // Apply falloff map
+                // Adjust terrain height based on falloff map
                 float falloffValue = falloffMap[x, z];
                 yPos -= falloffValue;
 
+                // Apply height multiplier
                 yPos *= heightMultiplier;
+
+                // Assign vertex position
                 vertices[i] = new Vector3(x, yPos, z);
                 i++;
             }
         }
 
+        // Initialize list to store triangle indices
         List<int> triangles = new List<int>();
         int vert = 0;
+
+        // Loop through each grid cell to generate triangles
         for (int z = 0; z < zSize; z++)
         {
             for (int x = 0; x < xSize; x++)
             {
+                // Define vertices for each triangle
                 triangles.Add(vert + 0);
                 triangles.Add(vert + xSize + 1);
                 triangles.Add(vert + 1);
@@ -143,12 +158,18 @@ public class TerrainGenerator : NetworkBehaviour
             vert++;
         }
 
+        // Clear existing mesh data
         mesh.Clear();
 
+        // Assign vertices and triangles to mesh
         mesh.vertices = vertices;
         mesh.triangles = triangles.ToArray();
+
+        // Recalculate normals for proper lighting
         mesh.RecalculateNormals();
 
+        // Update MeshCollider with new mesh
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
+
 }
