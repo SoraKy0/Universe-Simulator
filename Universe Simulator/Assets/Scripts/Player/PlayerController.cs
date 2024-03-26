@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
-    [Header("Base setup")]
+    [Header("Character Movement")]
+    // Movement variables
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
+    // Mouse control variables
     public float lookSpeed = 2.0f;
-    public float lookXLimit = 45.0f;
+    public float lookXLimit = 90.0f;
 
-    public Material[] playerMaterials; 
 
+    public Material[] playerMaterials;
+
+    // Array of player colors for random assignment
     Color[] playerColors = new Color[]
     {
         new Color(1.0f, 0.0f, 0.0f),    // Red
@@ -25,35 +29,40 @@ public class PlayerController : NetworkBehaviour
         new Color(0.5f, 0.0f, 0.5f),    // Purple
     };
 
+    // References for the characterController
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
+
     [HideInInspector]
     public bool canMove = true;
 
+    // Camera offset from player's position (this is not really used as the game is a first person game)
     [SerializeField]
     private float cameraYOffset = 0.4f;
     private Camera playerCamera;
 
+   
     public override void OnStartClient()
     {
         base.OnStartClient();
+        // Set up camera for each client joined
         if (base.IsOwner)
         {
             playerCamera = Camera.main;
             playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
-            playerCamera.transform.SetParent(transform);    
-            
+            playerCamera.transform.SetParent(transform);
         }
         else
         {
+            // Disable PlayerController if it's not owned by the local player, so each player only contols their own character
             gameObject.GetComponent<PlayerController>().enabled = false;
         }
 
         if (base.IsClient)
         {
-            // Assign a random color to the player
+            // Assign a random color to the player object
             if (playerMaterials != null && playerMaterials.Length > 0)
             {
                 Renderer renderer = GetComponentInChildren<Renderer>();
@@ -64,29 +73,34 @@ public class PlayerController : NetworkBehaviour
                 }
             }
         }
-
     }
 
+    // Executed once when the game starts
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        // Lock cursor for better player experience
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    // Update is called once per frame
     void Update()
     {
         bool isRunning = false;
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
+        // Keybord WASD contolls
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
+        // Mouse contols
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
+        // Jump Controls
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpSpeed;
@@ -96,13 +110,16 @@ public class PlayerController : NetworkBehaviour
             moveDirection.y = movementDirectionY;
         }
 
+        // Apply gravity
         if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
+        // Move the character
         characterController.Move(moveDirection * Time.deltaTime);
 
+        // Rotate the camera based on mouse movement
         if (canMove && playerCamera != null)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;

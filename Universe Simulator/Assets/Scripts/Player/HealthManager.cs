@@ -5,97 +5,93 @@ using FishNet.Transporting;
 
 public class HealthManager : NetworkBehaviour
 {
+    // Reference to the health bar prefab
     public GameObject healthBarPrefab;
+    // Reference to the instantiated health bar
     private GameObject instantiatedHealthBar;
 
-    private float _healthAmount = 100f;
+    // Current health amount
+    private float healthAmount = 100f;
     public float HealthAmount
     {
-        get => _healthAmount;
+        get => healthAmount;
         set
         {
-            if (_healthAmount != value)
+            if (healthAmount != value)
             {
-                _healthAmount = value;
-                UpdateHealthBar();
+                healthAmount = value;
+                UpdateHealthBar(); // Update the health bar when health changes
+                if (healthAmount <= 0)
+                {
+                    Debug.Log("DEAD"); // Log "DEAD" when health reaches 0
+                }
             }
         }
     }
 
+    // Amount of health restored per healingTime
     public float HealingAmount = 5f;
+    // Time interval between healing
     public float HealingTime = 5f;
     private float nextHealingTime = 0f;
+
 
     public override void OnStartClient()
     {
         base.OnStartClient();
+        if (IsClient)
         {
-            if (IsClient)
+            // Instantiate the health bar and update it
+            instantiatedHealthBar = Instantiate(healthBarPrefab, transform);
+            UpdateHealthBar();
+
+            // Ensure that the parent Health Bar object has a NetworkBehaviour component
+            if (transform.parent != null && transform.parent.GetComponent<NetworkBehaviour>() == null)
             {
-                instantiatedHealthBar = Instantiate(healthBarPrefab, transform);
-                UpdateHealthBar();
+                transform.parent.gameObject.AddComponent<NetworkBehaviour>();
             }
         }
     }
 
-    void Start()
-    {
-
-    }
-
+    // Update is called once per frame
     void Update()
     {
-        base.OnStartClient();
+        // If on the client and health is not full and it start to heal
+        if (IsClient && HealthAmount > 0 && HealthAmount < 100 && Time.time >= nextHealingTime)
         {
-            if (IsClient)
-            {
-                if (HealthAmount <= 0)
-                {
-                    Debug.Log("DEAD");
-                    return;
-                }
-
-                if (HealthAmount < 100 && Time.time >= nextHealingTime)
-                {
-                    Heal(HealingAmount);
-                    nextHealingTime = Time.time + HealingTime;
-                }
-            }
+            Heal(HealingAmount);
+            nextHealingTime = Time.time + HealingTime;
         }
-
     }
 
+    // Called when player rigidbody has begun touching enemy rigidbody
     void OnCollisionEnter(Collision collision)
     {
+        // If colliding with an enemy
         if (collision.gameObject.CompareTag("Enemy") && IsOwner)
         {
+            // Amount of damage to be taked passed throught the methord
             TakeDamageClient(20f);
         }
     }
 
-
     public void TakeDamageClient(float damage)
     {
-        if (IsClient)
-        {
-            HealthAmount -= damage;
-            HealthAmount = Mathf.Max(HealthAmount, 0);
-        }
+        HealthAmount -= damage; // Reduce health
+        HealthAmount = Mathf.Max(HealthAmount, 0); // Ensure health doesn't go below 0
     }
 
-
+    // Remote procedure call to handle healing on the server side
     public void HealServerRpc(float healingAmount)
     {
-        if (IsClient)
-        {
-            HealthAmount += healingAmount;
-            HealthAmount = Mathf.Min(HealthAmount, 100);
-        }
+        HealthAmount += healingAmount; // Increase health
+        HealthAmount = Mathf.Min(HealthAmount, 100); // Ensure health doesn't exceed 100
     }
 
+    // Update the actual of the health bar the player sees
     private void UpdateHealthBar()
     {
-        if (IsClient && instantiatedHealthBar != null)
+        if (instantiatedHealthBar != null)
         {
             Image healthFill = instantiatedHealthBar.transform.Find("Health").GetComponent<Image>();
             if (healthFill != null)
@@ -105,19 +101,15 @@ public class HealthManager : NetworkBehaviour
         }
     }
 
+
     public void TakeDamage(float damage)
     {
-        if (IsClient)
-        {
-            TakeDamageClient(damage);
-        }
+        TakeDamageClient(damage);
     }
+
 
     public void Heal(float healingAmount)
     {
-        if (IsClient)
-        {
-            HealServerRpc(healingAmount);
-        }
+        HealServerRpc(healingAmount);
     }
 }

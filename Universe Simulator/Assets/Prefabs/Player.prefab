@@ -298,7 +298,7 @@ MonoBehaviour:
   jumpSpeed: 8
   gravity: 20
   lookSpeed: 2
-  lookXLimit: 45
+  lookXLimit: 90
   playerMaterials:
   - {fileID: 2100000, guid: 3dc06bd8d7fcff049b0751a51abafaf5, type: 2}
   canMove: 1

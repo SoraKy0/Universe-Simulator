@@ -8,21 +8,21 @@ using FishNet.Object.Synchronizing;
 
 public class TerrainGenerator : NetworkBehaviour
 {
-    [SerializeField] int xSize = 120;
-    [SerializeField] int zSize = 120;
+    [SerializeField] int xSize = 120;  // Width of the terrain 
+    [SerializeField] int zSize = 120;  // Length of the terrain 
 
-    [SerializeField] int octavesAmount = 4;
+    [SerializeField] int octavesAmount = 4;  // Number of layers of Perlin noise
 
-    [SerializeField] Gradient TerrainGradient;
-    [SerializeField] Material mat;
+    [SerializeField] Gradient TerrainGradient;  
+    [SerializeField] Material mat;  
 
+    private Mesh mesh;  
+    private Texture2D gradientTexture;  // Texture representing terrain gradient
+    private Vector3[] vertices;  // Array to store vertices of the terrain
 
-    private Mesh mesh;
-    private Texture2D gradientTexture;
-    private Vector3[] vertices;
+    private float[,] falloffMap;  // Array representing falloff map for terrain edges
 
-    private float[,] falloffMap;
-
+    // Variables synchronized across network for consistent terrain generation
     [SyncVar] public float noiseScale;
     [SyncVar] public int xOffset;
     [SyncVar] public int zOffset;
@@ -33,6 +33,7 @@ public class TerrainGenerator : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+        // Randomize variables on the server to ensure all clients get the same variables
         if (base.IsServer)
         {
             noiseScale = Random.Range(0.02f, 0.03f);
@@ -50,6 +51,7 @@ public class TerrainGenerator : NetworkBehaviour
         }
     }
 
+    // Executed once when the game starts
     void Start()
     {
         CreateMesh();
@@ -58,6 +60,7 @@ public class TerrainGenerator : NetworkBehaviour
         GenerateTerrain();
     }
 
+    // Update is called once per frame
     void Update()
     {
         GenerateTerrain();
@@ -65,6 +68,7 @@ public class TerrainGenerator : NetworkBehaviour
         UpdateMaterialProperties();
     }
 
+    // Update material properties of gradient texture and terrain height range
     private void UpdateMaterialProperties()
     {
         float minTerrainHeight = mesh.bounds.min.y + transform.position.y - 0.1f;
@@ -75,6 +79,7 @@ public class TerrainGenerator : NetworkBehaviour
         mat.SetFloat("maxTerrainHeight", maxTerrainHeight);
     }
 
+    // Generate gradient texture based on terrain gradient
     private void GradientToTexture()
     {
         gradientTexture = new Texture2D(1, 100);
@@ -89,26 +94,27 @@ public class TerrainGenerator : NetworkBehaviour
         gradientTexture.Apply();
     }
 
+    // Create the initial empty mesh for the terrain
     void CreateMesh()
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
+    // Generate falloff map to lower the terrains edges to make the island
     void GenerateFalloffMap()
     {
         falloffMap = FalloffForTerrain.GenerateFalloffMap(xSize + 1);
     }
 
-    
-    //Generates the terrain geometry using Perlin noise and falloff map.
+    // Generate terrain geometry using Perlin noise and falloff map
     private void GenerateTerrain()
     {
         // Initialize array to hold vertices
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
         int i = 0;
 
-        // Loop through each grid point to create vertices
+        // Loop through each point to create vertices
         for (int z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
@@ -171,5 +177,4 @@ public class TerrainGenerator : NetworkBehaviour
         // Update MeshCollider with new mesh
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
-
 }
