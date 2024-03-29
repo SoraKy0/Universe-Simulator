@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: cf82640df708c9949bd547b38555eee8, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -833,8 +833,8 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 584410112
-  <SceneId>k__BackingField: 2510022321667897582
+  _scenePathHash: 774665742
+  <SceneId>k__BackingField: 3327164029412402240
   <AssetPathHash>k__BackingField: 0
 --- !u!33 &714568612
 MeshFilter:
@@ -1848,8 +1848,8 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 584410112
-  <SceneId>k__BackingField: 2510022321341643744
+  _scenePathHash: 774665742
+  <SceneId>k__BackingField: 3327164029175314073
   <AssetPathHash>k__BackingField: 0
 --- !u!1 &2089652437
 GameObject:
