@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SettingsMenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    public static bool GameIsPaused = false;
+
+    public GameObject pauseMenuUI;
+
     public TMP_Dropdown resolutionDropdown;
 
     private void Start()
@@ -57,15 +59,41 @@ public class SettingsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    // Method to set the volume
-    public void SetVolume(float volume)
+    // Update is called once per frame
+    void Update()
     {
-        audioMixer.SetFloat("volume", volume);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
     }
 
-    // Method to toggle fullscreen/windowed mode
+    public void Resume()
+    {
+        pauseMenuUI.SetActive(false);
+        GameIsPaused = false;
+        
+    }
+
+    void Pause()
+    {
+        pauseMenuUI.SetActive(true);
+        GameIsPaused = true;
+    }
     public void SetWindowedMode(bool isWindowed)
     {
         Screen.fullScreen = !isWindowed;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
