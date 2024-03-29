@@ -15,7 +15,7 @@ public class EnemyAI : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If not on the client, do end the Update method
+        // If not on the client, end the Update method
         if (!IsClient)
             return;
 
