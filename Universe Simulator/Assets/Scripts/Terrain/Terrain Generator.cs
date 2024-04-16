@@ -13,10 +13,10 @@ public class TerrainGenerator : NetworkBehaviour
 
     [SerializeField] int octavesAmount = 4;  // Number of layers of Perlin noise
 
-    [SerializeField] Gradient TerrainGradient;  
-    [SerializeField] Material mat;  
+    [SerializeField] Gradient TerrainGradient;
+    [SerializeField] Material mat;
 
-    private Mesh mesh;  
+    private Mesh mesh;
     private Texture2D gradientTexture;  // Texture representing terrain gradient
     private Vector3[] vertices;  // Array to store vertices of the terrain
 
@@ -58,6 +58,7 @@ public class TerrainGenerator : NetworkBehaviour
         GradientToTexture();
         GenerateFalloffMap();
         GenerateTerrain();
+        Invoke("SpawnTreesAfterDelay", 5f);
     }
 
     // Update is called once per frame
@@ -66,7 +67,14 @@ public class TerrainGenerator : NetworkBehaviour
         GenerateTerrain();
         GradientToTexture();
         UpdateMaterialProperties();
+
     }
+
+    private void SpawnTreesAfterDelay()
+    {
+        GetComponent<TreeSpawner>().SpawnTrees();
+    }
+
 
     // Update material properties of gradient texture and terrain height range
     private void UpdateMaterialProperties()
