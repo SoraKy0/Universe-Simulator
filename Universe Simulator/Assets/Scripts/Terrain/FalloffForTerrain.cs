@@ -35,10 +35,10 @@ public class FalloffForTerrain : MonoBehaviour
     // Method to calculate the falloff value based on distance
     private static float Evaluate(float value, float maxDistance)
     {
-        float steepness = 4f; // Steepness of the falloff curve, controls how quickly the falloff occurs
+        float falloffOfTerrainToWater = 4f; // Steepness of the falloff curve, controls how quickly the falloff occurs
         float falloffStart = 4f; // Distance at which falloff starts, affects the start of the falloff curve
 
         // Calculate the falloff value using a falloff curve equation
-        return Mathf.Pow(value, steepness) / (Mathf.Pow(value, steepness) + Mathf.Pow(falloffStart - falloffStart * value, steepness));
+        return Mathf.Pow(value, falloffOfTerrainToWater) / (Mathf.Pow(value, falloffOfTerrainToWater) + Mathf.Pow(falloffStart - falloffStart * value, falloffOfTerrainToWater));
     }
 }

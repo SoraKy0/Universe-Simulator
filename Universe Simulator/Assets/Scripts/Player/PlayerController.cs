@@ -14,19 +14,18 @@ public class PlayerController : NetworkBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 90.0f;
 
-
     public Material[] playerMaterials;
 
     // Array of player colors for random assignment
     Color[] playerColors = new Color[]
     {
-        new Color(1.0f, 0.0f, 0.0f),    // Red
-        new Color(0.0f, 1.0f, 0.0f),    // Green
-        new Color(0.0f, 0.0f, 1.0f),    // Blue
-        new Color(1.0f, 1.0f, 0.0f),    // Yellow
-        new Color(1.0f, 0.0f, 1.0f),    // Magenta
-        new Color(0.0f, 1.0f, 1.0f),    // Cyan
-        new Color(0.5f, 0.0f, 0.5f),    // Purple
+        new Color(1.0f, 0.0f, 0.0f), // Red
+        new Color(0.0f, 1.0f, 0.0f), // Green
+        new Color(0.0f, 0.0f, 1.0f), // Blue
+        new Color(1.0f, 1.0f, 0.0f), // Yellow
+        new Color(1.0f, 0.0f, 1.0f), // Magenta
+        new Color(0.0f, 1.0f, 1.0f), // Cyan
+        new Color(0.5f, 0.0f, 0.5f), // Purple
     };
 
     // References for the characterController
@@ -34,16 +33,14 @@ public class PlayerController : NetworkBehaviour
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
 
-
     [HideInInspector]
     public bool canMove = true;
 
-    // Camera offset from player's position (this is not really used as the game is a first person game)
+    // Camera offset from player's position (not used as the game is a first-person game)
     [SerializeField]
     private float cameraYOffset = 0.4f;
     private Camera playerCamera;
 
-   
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -56,7 +53,7 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            // Disable PlayerController if it's not owned by the local player, so each player only contols their own character
+            // Disable PlayerController if it's not owned by the local player, so each player only controls their own character
             gameObject.GetComponent<PlayerController>().enabled = false;
         }
 
@@ -87,14 +84,20 @@ public class PlayerController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            // If the game is paused, don't move the character or rotate the camera
+            return;
+        }
+
         bool isRunning = false;
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        // Keybord WASD contolls
+        // Keyboard WASD controls
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        // Mouse contols
+        // Mouse controls
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;

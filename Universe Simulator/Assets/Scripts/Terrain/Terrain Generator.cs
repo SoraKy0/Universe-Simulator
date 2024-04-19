@@ -39,7 +39,7 @@ public class TerrainGenerator : NetworkBehaviour
             noiseScale = Random.Range(0.02f, 0.03f);
             xOffset = Random.Range(0, 1000);
             zOffset = Random.Range(0, 1000);
-            lacunarity = Random.Range(1.4f, 2f);
+            lacunarity = Random.Range(2f, 2.5f);
             persistence = Random.Range(0.5f, 0.4f);
 
             float heightMin = -8f;
@@ -48,6 +48,7 @@ public class TerrainGenerator : NetworkBehaviour
             {
                 heightMultiplier = Random.Range(heightMin, heightMax);
             } while (heightMultiplier > -3.9f && heightMultiplier < 3);
+            Invoke("SpawnTreesAfterDelay", 1.5f);
         }
     }
 
@@ -58,7 +59,7 @@ public class TerrainGenerator : NetworkBehaviour
         GradientToTexture();
         GenerateFalloffMap();
         GenerateTerrain();
-        Invoke("SpawnTreesAfterDelay", 5f);
+        
     }
 
     // Update is called once per frame
@@ -73,6 +74,7 @@ public class TerrainGenerator : NetworkBehaviour
     private void SpawnTreesAfterDelay()
     {
         GetComponent<TreeSpawner>().SpawnTrees();
+        Debug.Log("Spawning trees");
     }
 
 
