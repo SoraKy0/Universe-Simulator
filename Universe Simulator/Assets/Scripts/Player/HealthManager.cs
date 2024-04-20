@@ -6,7 +6,7 @@ using FishNet.Transporting;
 public class HealthManager : NetworkBehaviour
 {
     // Reference to the health bar prefab
-    public GameObject healthBarPrefab;
+    public GameObject healthBarObjectPrefab;
     // Reference to the instantiated health bar
     private GameObject instantiatedHealthBar;
 
@@ -42,7 +42,7 @@ public class HealthManager : NetworkBehaviour
         if (IsClient)
         {
             // Instantiate the health bar and update it
-            instantiatedHealthBar = Instantiate(healthBarPrefab, transform);
+            instantiatedHealthBar = Instantiate(healthBarObjectPrefab, transform);
             UpdateHealthBar();
 
             // Ensure that the parent Health Bar object has a NetworkBehaviour component
@@ -101,12 +101,10 @@ public class HealthManager : NetworkBehaviour
         }
     }
 
-
     public void TakeDamage(float damage)
     {
         TakeDamageClient(damage);
     }
-
 
     public void Heal(float healingAmount)
     {

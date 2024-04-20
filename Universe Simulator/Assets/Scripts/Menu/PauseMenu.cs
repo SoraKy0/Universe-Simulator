@@ -6,22 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    // Declare GameIsPaused as a public static boolean to keep track of the game's pause state.
     public static bool GameIsPaused = false;
 
-    // Declare a GameObject for the pause menu UI.
     public GameObject pauseMenuUI;
 
-    // Declare a TMP_Dropdown for the resolution dropdown menu.
     public TMP_Dropdown resolutionDropdown;
 
-    // Start method runs at the beginning.
+    // Start is called before the first frame update.
     void Start()
     {
-        // Fetch available resolutions.
         Resolution[] resolutions = Screen.resolutions;
 
-        // Clear existing options in the resolution dropdown.
         resolutionDropdown.ClearOptions();
 
         // Create a list to store resolution options.
@@ -31,13 +26,17 @@ public class PauseMenu : MonoBehaviour
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = $"{resolutions[i].width} x {resolutions[i].height} @{resolutions[i].refreshRate}Hz";
+            // Use refreshRateRatio instead of refreshRate.
+            RefreshRate refreshRate = resolutions[i].refreshRateRatio;
+            string option = $"{resolutions[i].width} x {resolutions[i].height} @{refreshRate.numerator}/{refreshRate.denominator}Hz";
             options.Add(option);
 
             // Check if this resolution matches the current screen resolution.
+            RefreshRate currentRefreshRate = Screen.currentResolution.refreshRateRatio;
             if (resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height &&
-                resolutions[i].refreshRate == Screen.currentResolution.refreshRate)
+                resolutions[i].refreshRateRatio.numerator == currentRefreshRate.numerator &&
+                resolutions[i].refreshRateRatio.denominator == currentRefreshRate.denominator)
             {
                 currentResolutionIndex = i;
             }
@@ -94,7 +93,7 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = true;
     }
 
-    // Method to set windowed mode.
+    // Method to toggle windowed/fullscreen mode.
     public void SetWindowedMode(bool isWindowed)
     {
         Screen.fullScreen = !isWindowed;

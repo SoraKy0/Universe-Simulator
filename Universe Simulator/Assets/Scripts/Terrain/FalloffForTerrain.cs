@@ -17,7 +17,7 @@ public class FalloffForTerrain : MonoBehaviour
         {
             for (int y = 0; y < size; y++)
             {
-                // Normalize the x and y coordinates to range from -1 to 1
+                // Normalize the x and y coordinates to range from -1 to 1 
                 float normalizedX = x / (float)size * 2 - 1;
                 float normalizedY = y / (float)size * 2 - 1;
 

@@ -5,23 +5,23 @@ using System.Collections.Generic;
 
 public class TreeSpawner : NetworkBehaviour
 {
-    public GameObject treePrefab; // Prefab of the tree object
+    public GameObject treePrefab; //
 
-    // Variables to control the spawning of trees (not synchronized)
-    public int numOfTree = 350; // Number of trees to spawn
-    public float treeSpawnArea = 245f; // Size of the square area to spawn trees
-    public float rayCastSpawnHeight = 18f; // Maximum height from which raycasts will originate
+    
+    public int numOfTree = 350; //Number of trees that will spawn divide by 4 (because the treeSpawnArea is not positions properly)
+    public float treeSpawnArea = 245f; //The area where the trees will spawn
+    public float rayCastSpawnHeight = 18f; //The height where the raycasts will spawn
 
-    // A list of positions where trees have spawned, synchronized across the network
+    // The points where the trees will spawn will be synced over the network where each players will have the trees to spawn in the same areas
     [SyncObject]
     private readonly SyncList<Vector3> treeSpawnLocations = new SyncList<Vector3>();
 
-    // Method to spawn trees
+    //Shoots raycasts randomly in side the treeSpawnArea and places the tree prefab there
     public void SpawnTrees()
     {
         if (IsServer)
         {
-            treeSpawnLocations.Clear(); // Clear the list of spawn locations
+            treeSpawnLocations.Clear(); // Clear the list of spawn locations so each time the game is ran the old tree spawn data will clear
 
             for (int i = 0; i < numOfTree; i++)
             {
@@ -30,11 +30,11 @@ public class TreeSpawner : NetworkBehaviour
                 float z = Random.Range(-treeSpawnArea / 2, treeSpawnArea / 2);
                 Vector3 raycastSpawnPoint = new Vector3(x, rayCastSpawnHeight, z);
 
-                // Spawn a raycast downwards from the generated point
+                // Spawn a raycast downwards from the created point
                 RaycastHit hit;
                 if (Physics.Raycast(raycastSpawnPoint, Vector3.down, out hit))
                 {
-                    // Check if the hit point's y-coordinate is at or above 0
+                    // Check if the hit point's y-coordinate is at or above 0 so that trees do not spawn in the water
                     if (hit.point.y >= 0)
                     {
                         // Store the spawn location in the list
@@ -42,7 +42,7 @@ public class TreeSpawner : NetworkBehaviour
 
                         // Instantiate a tree prefab at the hit point
                         GameObject tree = Instantiate(treePrefab, hit.point, Quaternion.identity);
-                        // Optionally, rotate the tree randomly to add variation
+                        // Optionally, rotate the tree randomly to make the trees look natural as if they all faced the same way it will look strange
                         tree.transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
                     }
                 }
@@ -50,22 +50,11 @@ public class TreeSpawner : NetworkBehaviour
         }
     }
 
-    // Method called when the client connects
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        if (IsServer)
-        {
-            // Randomize number of trees and spawn them
-            numOfTree = 350;
-
-            // Set other variables
-            treeSpawnArea = 245f; // Fixed square size
-            rayCastSpawnHeight = 18f; // Fixed maximum height
-
-        }
-        else
+        if (IsClient) 
         {
             // Spawn trees based on synchronized treeSpawnLocations on clients
             foreach (var location in treeSpawnLocations)
@@ -76,20 +65,19 @@ public class TreeSpawner : NetworkBehaviour
         }
     }
 
-    // Gizmo visualization of the square area where trees will spawn
+    // Uses Gizmo to draw lines to show the area that the trees can spawn in
     private void OnDrawGizmos()
     {
-        // Define the color for the gizmo
         Gizmos.color = Color.red;
 
-        // Calculate the corners of the square area
+        // uses the position of the gameobject as the center and then movess the treeSpawnarea around for each side
         Vector3 center = transform.position;
         Vector3 topLeft = center + new Vector3(-treeSpawnArea / 2, 0, treeSpawnArea / 2);
         Vector3 topRight = center + new Vector3(treeSpawnArea / 2, 0, treeSpawnArea / 2);
         Vector3 bottomRight = center + new Vector3(treeSpawnArea / 2, 0, -treeSpawnArea / 2);
         Vector3 bottomLeft = center + new Vector3(-treeSpawnArea / 2, 0, -treeSpawnArea / 2);
 
-        // Draw the square using lines
+        // draw a square using the points created and linking them together 
         Gizmos.DrawLine(topLeft, topRight);
         Gizmos.DrawLine(topRight, bottomRight);
         Gizmos.DrawLine(bottomRight, bottomLeft);

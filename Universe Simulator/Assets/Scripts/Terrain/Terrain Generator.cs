@@ -11,29 +11,29 @@ public class TerrainGenerator : NetworkBehaviour
     [SerializeField] int xSize = 120;  // Width of the terrain 
     [SerializeField] int zSize = 120;  // Length of the terrain 
 
-    [SerializeField] int octavesAmount = 4;  // Number of layers of Perlin noise
+    [SerializeField] int octavesAmount = 4;  // Number of layers of Perlin noise (just makes the ground more detailed)
 
     [SerializeField] Gradient TerrainGradient;
     [SerializeField] Material mat;
 
     private Mesh mesh;
-    private Texture2D gradientTexture;  // Texture representing terrain gradient
+    private Texture2D gradientTexture;  // Texture representing terrain gradient 
     private Vector3[] vertices;  // Array to store vertices of the terrain
 
     private float[,] falloffMap;  // Array representing falloff map for terrain edges
 
-    // Variables synchronized across network for consistent terrain generation
-    [SyncVar] public float noiseScale;
-    [SyncVar] public int xOffset;
-    [SyncVar] public int zOffset;
-    [SyncVar] public float lacunarity;
-    [SyncVar] public float persistence;
-    [SyncVar] public float heightMultiplier;
+    //[SyncVar] syncs the variable for each player from server to clients 
+    [SyncVar] public float noiseScale; //How Strong the Noise will be
+    [SyncVar] public int xOffset; //Moves the perlin noise on the X-Axis
+    [SyncVar] public int zOffset; //Moves the perlin noise on the Y-Axis
+    [SyncVar] public float lacunarity; // Controls the frequency in the Octaves 
+    [SyncVar] public float persistence; // Controls Decreace in the amplitude of octaves
+    [SyncVar] public float heightMultiplier; // Effects the Amplitude of the Perlin Noise so makes the high point and low points stronger
 
     public override void OnStartClient()
     {
         base.OnStartClient();
-        // Randomize variables on the server to ensure all clients get the same variables
+        // Randomize variables on the server, this is to give each player the same terrain 
         if (base.IsServer)
         {
             noiseScale = Random.Range(0.02f, 0.03f);
@@ -48,7 +48,9 @@ public class TerrainGenerator : NetworkBehaviour
             {
                 heightMultiplier = Random.Range(heightMin, heightMax);
             } while (heightMultiplier > -3.9f && heightMultiplier < 3);
-            Invoke("SpawnTreesAfterDelay", 1.5f);
+            //Runs the tree spawn script after one second after the terrain is generated (So the trees sqawns properly on the terrain)
+            Invoke("SpawnTreesAfterDelay", 1f); 
+
         }
     }
 
@@ -73,12 +75,12 @@ public class TerrainGenerator : NetworkBehaviour
 
     private void SpawnTreesAfterDelay()
     {
-        GetComponent<TreeSpawner>().SpawnTrees();
-        Debug.Log("Spawning trees");
+        GetComponent<TreeSpawner>().SpawnTrees(); //Calls the SpawnTree methord from the Treespawner script
+        Debug.Log("le tree have arrived");
     }
 
 
-    // Update material properties of gradient texture and terrain height range
+    // Changes the terrain gradient colour every frame, so when you make changes to the terrain in the inspector the gradient updates correctly 
     private void UpdateMaterialProperties()
     {
         float minTerrainHeight = mesh.bounds.min.y + transform.position.y - 0.1f;
@@ -89,7 +91,7 @@ public class TerrainGenerator : NetworkBehaviour
         mat.SetFloat("maxTerrainHeight", maxTerrainHeight);
     }
 
-    // Generate gradient texture based on terrain gradient
+    // Generate gradient texture based on terrain height
     private void GradientToTexture()
     {
         gradientTexture = new Texture2D(1, 100);
@@ -104,7 +106,7 @@ public class TerrainGenerator : NetworkBehaviour
         gradientTexture.Apply();
     }
 
-    // Create the initial empty mesh for the terrain
+    // Create the initial empty mesh where the terrain mesh will be stored in
     void CreateMesh()
     {
         mesh = new Mesh();
@@ -117,21 +119,21 @@ public class TerrainGenerator : NetworkBehaviour
         falloffMap = FalloffForTerrain.GenerateFalloffMap(xSize + 1);
     }
 
-    // Generate terrain geometry using Perlin noise and falloff map
+    // Generates the terrain Island/Lake
     private void GenerateTerrain()
     {
         // Initialize array to hold vertices
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
         int i = 0;
 
-        // Loop through each point to create vertices
+        // Nested Loop that goes through each point to create vertices
         for (int z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
                 float yPos = 0;
 
-                // Use Perlin noise to calculate terrain height
+                // for each octave (noise layer) a perlin noise map is created
                 for (int y = 0; y < octavesAmount; y++)
                 {
                     float frequency = Mathf.Pow(lacunarity, y);
@@ -140,14 +142,15 @@ public class TerrainGenerator : NetworkBehaviour
                                               (z + zOffset) * noiseScale * frequency) * amplitude;
                 }
 
-                // Adjust terrain height based on falloff map
+                // Applies the fallof to the terrain, lowers the yPos around the edges of the terrain
+
                 float falloffValue = falloffMap[x, z];
                 yPos -= falloffValue;
 
-                // Apply height multiplier
+                // Apply height multiplier yo yPos 
                 yPos *= heightMultiplier;
 
-                // Assign vertex position
+                //Gives each vertices on the mesh a position in the game so on the X, Z and using the yPos
                 vertices[i] = new Vector3(x, yPos, z);
                 i++;
             }
@@ -157,12 +160,12 @@ public class TerrainGenerator : NetworkBehaviour
         List<int> triangles = new List<int>();
         int vert = 0;
 
-        // Loop through each grid cell to generate triangles
+        // Loop through each verticie to generate triangles
         for (int z = 0; z < zSize; z++)
         {
             for (int x = 0; x < xSize; x++)
             {
-                // Define vertices for each triangle
+                // creates the a square by makeing a lines from each verticie
                 triangles.Add(vert + 0);
                 triangles.Add(vert + xSize + 1);
                 triangles.Add(vert + 1);
@@ -174,7 +177,7 @@ public class TerrainGenerator : NetworkBehaviour
             vert++;
         }
 
-        // Clear existing mesh data
+        // Clear existing mesh data so that each time there will be a new mesh
         mesh.Clear();
 
         // Assign vertices and triangles to mesh
@@ -184,7 +187,7 @@ public class TerrainGenerator : NetworkBehaviour
         // Recalculate normals for proper lighting
         mesh.RecalculateNormals();
 
-        // Update MeshCollider with new mesh
+        // Update MeshCollider with new mesh to the collision workes properly everytimes a new terrain is made
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 }
