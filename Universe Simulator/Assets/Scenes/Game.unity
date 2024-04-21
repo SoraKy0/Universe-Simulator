@@ -697,6 +697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Bar
       objectReference: {fileID: 0}
+    - target: {fileID: 2457150375975878618, guid: 1105f28577eae5640a688a69d193ba7e, type: 3}
+      propertyPath: m_TagString
+      value: HealthBar
+      objectReference: {fileID: 0}
     - target: {fileID: 8558865609911812994, guid: 1105f28577eae5640a688a69d193ba7e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1975,8 +1979,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 714568611}
   treePrefab: {fileID: 6741848807397687624, guid: 338de96adf5fbf742a9c50837ab4d5f8, type: 3}
   numOfTree: 1000
-  treeSpawnArea: 239.1
-  rayCastSpawnHeight: 10
+  treeSpawnArea: 245
+  rayCastSpawnHeight: 11
 --- !u!1 &733820284
 GameObject:
   m_ObjectHideFlags: 0
@@ -5477,7 +5481,7 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
-  _isGlobal: 0
+  _isGlobal: 1
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}

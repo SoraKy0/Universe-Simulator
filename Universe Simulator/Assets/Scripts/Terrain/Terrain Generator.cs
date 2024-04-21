@@ -48,8 +48,8 @@ public class TerrainGenerator : NetworkBehaviour
             {
                 heightMultiplier = Random.Range(heightMin, heightMax);
             } while (heightMultiplier > -3.9f && heightMultiplier < 3);
-            //Runs the tree spawn script after one second after the terrain is generated (So the trees sqawns properly on the terrain)
-            Invoke("SpawnTreesAfterDelay", 1f); 
+            //Runs the tree spawn script after 0.2 second after the terrain is generated (So the trees sqawns properly on the terrain)
+            Invoke("SpawnTreesAfterDelay", 0.2f); 
 
         }
     }
@@ -73,7 +73,7 @@ public class TerrainGenerator : NetworkBehaviour
 
     }
 
-    private void SpawnTreesAfterDelay()
+    public void SpawnTreesAfterDelay()
     {
         GetComponent<TreeSpawner>().SpawnTrees(); //Calls the SpawnTree methord from the Treespawner script
         Debug.Log("le tree have arrived");

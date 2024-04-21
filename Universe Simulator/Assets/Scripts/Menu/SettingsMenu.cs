@@ -7,28 +7,28 @@ using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
-    public AudioMixer audioMixer;
-    public TMP_Dropdown resolutionDropdown;
+    public AudioMixer audioMixer; //references the audiomixer in unity that control the volume of the game
+    public TMP_Dropdown resolutionsDropdown; //reference to the dropdown UI that has the differenct resolutions
 
     private void Start()
     {
-        // Fetch available resolutions
+        //Gets the resolutions of the screen
         Resolution[] resolutions = Screen.resolutions;
 
-        // Clear existing options
-        resolutionDropdown.ClearOptions();
+        //clears any existing resolutions from the dropdown
+        resolutionsDropdown.ClearOptions();
 
-        // Create a list to store resolution options
+        //list will store all the resolution options for the monitor
         List<string> options = new List<string>();
 
-        // Find the current resolution index
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = $"{resolutions[i].width} x {resolutions[i].height} @{resolutions[i].refreshRate}Hz";
+            //this is the way the resolutions with the width height and refresh rate will be added to the list
+            string option = $"{resolutions[i].width} x {resolutions[i].height} -{resolutions[i].refreshRate}Hz";
             options.Add(option);
 
-            // Check if this resolution matches the current screen resolution
+            //this checks is the monitor resolution is the same as the game resolution
             if (resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height &&
                 resolutions[i].refreshRate == Screen.currentResolution.refreshRate)
@@ -37,33 +37,29 @@ public class SettingsMenu : MonoBehaviour
             }
         }
 
-        // Add resolution options to the dropdown
-        resolutionDropdown.AddOptions(options);
-
-        // Set the value of the dropdown to the current resolution index
-        resolutionDropdown.value = currentResolutionIndex;
-
-        // Refresh the shown value of the dropdown
-        resolutionDropdown.RefreshShownValue();
+        //put the resolutions into the dropdown in the 
+        resolutionsDropdown.AddOptions(options);
+         
+        // Set the value of the dropdown to the current resolution
+        resolutionsDropdown.value = currentResolutionIndex;
+        resolutionsDropdown.RefreshShownValue();
     }
 
-    // Method to set the resolution
+    //sets the screens resolution to the selected resolution from the dropdown
     public void SetResolution(int resolutionIndex)
     {
-        // Fetch the selected resolution from the resolutions array
+        //applies the resolution to game
         Resolution resolution = Screen.resolutions[resolutionIndex];
-
-        // Apply the selected resolution
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    // Method to set the volume
+    //uses the audio mixer thing to change the volume
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("volume", volume);
     }
 
-    // Method to toggle fullscreen/windowed mode
+    //Method to toggle windowed/fullscreen mode
     public void SetWindowedMode(bool isWindowed)
     {
         Screen.fullScreen = !isWindowed;

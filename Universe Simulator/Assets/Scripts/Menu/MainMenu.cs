@@ -7,12 +7,12 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Load the other scene fron the menu to the actual game
     }
 
     public void QuitGame()
     {
-        Application.Quit();
+        Application.Quit(); //quits the game when the quit button in pressed
     }
 
 }

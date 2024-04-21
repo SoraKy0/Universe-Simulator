@@ -5,9 +5,9 @@ using FishNet.Transporting;
 
 public class HealthManager : NetworkBehaviour
 {
-    // Reference to the health bar prefab
+    //Reference to the health bar prefab
     public GameObject healthBarObjectPrefab;
-    // Reference to the instantiated health bar
+    //Holds a reference to the health bar UI
     private GameObject instantiatedHealthBar;
 
     // Current health amount
@@ -23,15 +23,14 @@ public class HealthManager : NetworkBehaviour
                 UpdateHealthBar(); // Update the health bar when health changes
                 if (healthAmount <= 0)
                 {
-                    Debug.Log("DEAD"); // Log "DEAD" when health reaches 0
+                    Debug.Log("DEAD"); // Says "DEAD" in the console if the health reaches 0
                 }
             }
         }
     }
 
-    // Amount of health restored per healingTime
+    // 5 health is restored every 5 seconds
     public float HealingAmount = 5f;
-    // Time interval between healing
     public float HealingTime = 5f;
     private float nextHealingTime = 0f;
 
@@ -41,54 +40,46 @@ public class HealthManager : NetworkBehaviour
         base.OnStartClient();
         if (IsClient)
         {
-            // Instantiate the health bar and update it
+            //if your a client you will get a health bar
             instantiatedHealthBar = Instantiate(healthBarObjectPrefab, transform);
             UpdateHealthBar();
-
-            // Ensure that the parent Health Bar object has a NetworkBehaviour component
-            if (transform.parent != null && transform.parent.GetComponent<NetworkBehaviour>() == null)
-            {
-                transform.parent.gameObject.AddComponent<NetworkBehaviour>();
-            }
         }
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
-        // If on the client and health is not full and it start to heal
-        if (IsClient && HealthAmount > 0 && HealthAmount < 100 && Time.time >= nextHealingTime)
+        //changes the health amount is you take damge then heals is health is below 100
+        if (HealthAmount > 0 && HealthAmount < 100 && Time.time >= nextHealingTime)
         {
             Heal(HealingAmount);
             nextHealingTime = Time.time + HealingTime;
         }
     }
 
-    // Called when player rigidbody has begun touching enemy rigidbody
+    //when the enemy object with the tag enemy chouches the player then the player takes 20 damage
     void OnCollisionEnter(Collision collision)
     {
-        // If colliding with an enemy
         if (collision.gameObject.CompareTag("Enemy") && IsOwner)
         {
-            // Amount of damage to be taked passed throught the methord
-            TakeDamageClient(20f);
+            enemyDamage(20f);
         }
     }
 
-    public void TakeDamageClient(float damage)
+    public void enemyDamage(float damage)
     {
-        HealthAmount -= damage; // Reduce health
-        HealthAmount = Mathf.Max(HealthAmount, 0); // Ensure health doesn't go below 0
+        HealthAmount -= damage; //reduces health
+        HealthAmount = Mathf.Max(HealthAmount, 0); //Prevents the health doesn't go below 0
     }
 
-    // Remote procedure call to handle healing on the server side
-    public void HealServerRpc(float healingAmount)
+
+    public void HealPlayer(float healingAmount)
     {
-        HealthAmount += healingAmount; // Increase health
-        HealthAmount = Mathf.Min(HealthAmount, 100); // Ensure health doesn't exceed 100
+        HealthAmount += healingAmount; //Increase health
+        HealthAmount = Mathf.Min(HealthAmount, 100); //Prevents the health doesn't go above 100
     }
 
-    // Update the actual of the health bar the player sees
+    //Update the actual of the health bar the player sees
     private void UpdateHealthBar()
     {
         if (instantiatedHealthBar != null)
@@ -101,13 +92,15 @@ public class HealthManager : NetworkBehaviour
         }
     }
 
+    //called when player takes damage
     public void TakeDamage(float damage)
     {
-        TakeDamageClient(damage);
+        enemyDamage(damage);
     }
 
+    //called when player heals
     public void Heal(float healingAmount)
     {
-        HealServerRpc(healingAmount);
+        HealPlayer(healingAmount);
     }
 }

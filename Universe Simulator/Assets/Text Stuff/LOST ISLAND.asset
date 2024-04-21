@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54d21f6ece3b46479f0c328f8c6007e0, type: 3}
-  m_Name: Pink Text Colour
+  m_Name: LOST ISLAND
   m_EditorClassIdentifier: 
   colorMode: 3
-  topLeft: {r: 1, g: 0.7783019, b: 0.92041606, a: 1}
-  topRight: {r: 1, g: 0.69411767, b: 0.8901961, a: 1}
-  bottomLeft: {r: 0, g: 1, b: 0.62352943, a: 1}
-  bottomRight: {r: 0, g: 1, b: 0.62476015, a: 1}
+  topLeft: {r: 0, g: 0.59776545, b: 1, a: 1}
+  topRight: {r: 0, g: 0.8202615, b: 1, a: 1}
+  bottomLeft: {r: 0.2617464, g: 1, b: 0, a: 1}
+  bottomRight: {r: 0, g: 1, b: 0.34550333, a: 1}

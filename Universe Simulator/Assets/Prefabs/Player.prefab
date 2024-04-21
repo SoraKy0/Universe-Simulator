@@ -297,8 +297,8 @@ MonoBehaviour:
   runningSpeed: 11.5
   jumpSpeed: 8
   gravity: 20
-  lookSpeed: 2
-  lookXLimit: 90
+  mouseSensitivity: 2
+  headAngleMax: 90
   playerMaterials:
   - {fileID: 2100000, guid: 3dc06bd8d7fcff049b0751a51abafaf5, type: 2}
   canMove: 1
@@ -361,7 +361,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 7
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 584410112
+  _scenePathHash: 774665742
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 7807759643866311769
 --- !u!114 &238704054914539415
@@ -424,6 +424,6 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 6550144038268756968}
   _networkObjectCache: {fileID: 6550144038268756968}
-  healthBarPrefab: {fileID: 2457150375975878618, guid: 1105f28577eae5640a688a69d193ba7e, type: 3}
+  healthBarObjectPrefab: {fileID: 2457150375975878618, guid: 1105f28577eae5640a688a69d193ba7e, type: 3}
   HealingAmount: 10
   HealingTime: 5

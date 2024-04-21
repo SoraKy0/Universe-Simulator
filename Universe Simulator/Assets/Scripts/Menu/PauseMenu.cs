@@ -8,54 +8,53 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
 
-    public GameObject pauseMenuUI;
+    public GameObject pauseMenuUI; //Reference  to the pause menu UI
 
-    public TMP_Dropdown resolutionDropdown;
+    public TMP_Dropdown resolutionDropdown; //Reference to the dropdown for the resulutions
 
     // Start is called before the first frame update.
     void Start()
     {
-        Resolution[] resolutions = Screen.resolutions;
+        Resolution[] resolutions = Screen.resolutions; //Stores a list of all avaliable screen resolutions
 
         resolutionDropdown.ClearOptions();
 
-        // Create a list to store resolution options.
+        //Create a list to store resolution options to be put in the dropdown
         List<string> options = new List<string>();
 
-        // Find the current resolution index.
+        //Find the current resolution of screen
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
-            // Use refreshRateRatio instead of refreshRate.
+            //this is the way the resolutions with the width height and refresh rate will be added to the list
             RefreshRate refreshRate = resolutions[i].refreshRateRatio;
-            string option = $"{resolutions[i].width} x {resolutions[i].height} @{refreshRate.numerator}/{refreshRate.denominator}Hz";
-            options.Add(option);
+            string option = $"{resolutions[i].width} x {resolutions[i].height} -{resolutions[i].refreshRate}Hz"; options.Add(option);
 
-            // Check if this resolution matches the current screen resolution.
+            //Check resolution of screen matches what the dropbox says
             RefreshRate currentRefreshRate = Screen.currentResolution.refreshRateRatio;
             if (resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height &&
                 resolutions[i].refreshRateRatio.numerator == currentRefreshRate.numerator &&
-                resolutions[i].refreshRateRatio.denominator == currentRefreshRate.denominator)
+                resolutions[i].refreshRate == Screen.currentResolution.refreshRate)
             {
                 currentResolutionIndex = i;
             }
         }
 
-        // Add resolution options to the dropdown.
+        //Adds the resolution options to the dropdown
         resolutionDropdown.AddOptions(options);
 
-        // Set the value of the dropdown to the current resolution index.
+        //Sets the dropdown value to the current screen resolution index
         resolutionDropdown.value = currentResolutionIndex;
 
-        // Refresh the displayed value of the dropdown.
+        // Refresh the displayed value of the dropdown
         resolutionDropdown.RefreshShownValue();
     }
 
     // Update method runs once per frame.
     void Update()
     {
-        // Toggle pause when the Escape key is pressed.
+        // when the escape key is pressed it will run the resume method
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (GameIsPaused)
@@ -69,37 +68,37 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    // Method to resume the game.
+    //Method to resume the game
     public void Resume()
     {
-        // Hide the pause menu.
+        //hides the pausemenu
         pauseMenuUI.SetActive(false);
-        // Lock and hide the mouse cursor.
+        //locks and hides the cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        // Unpause the game.
+        //unpauses the game
         GameIsPaused = false;
     }
 
-    // Method to pause the game.
+    //Method to pause the game
     void Pause()
     {
-        // Show the pause menu.
+        // Shows the pause menu
         pauseMenuUI.SetActive(true);
-        // Unlock and show the mouse cursor.
+        // Unlock and show the mouse cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        // Pause the game.
+        // Pauses the game
         GameIsPaused = true;
     }
 
-    // Method to toggle windowed/fullscreen mode.
+    //Method to toggle windowed/fullscreen mode
     public void SetWindowedMode(bool isWindowed)
     {
         Screen.fullScreen = !isWindowed;
     }
 
-    // Method to quit the game.
+    //Will quit the game when the button is pressed
     public void QuitGame()
     {
         Application.Quit();
