@@ -1761,12 +1761,12 @@ GameObject:
   m_Component:
   - component: {fileID: 714568608}
   - component: {fileID: 714568607}
-  - component: {fileID: 714568610}
+  - component: {fileID: 714568613}
   - component: {fileID: 714568606}
   - component: {fileID: 714568609}
   - component: {fileID: 714568611}
   - component: {fileID: 714568612}
-  - component: {fileID: 714568613}
+  - component: {fileID: 714568610}
   m_Layer: 3
   m_Name: Terrain Generator
   m_TagString: Untagged
@@ -1840,16 +1840,16 @@ MonoBehaviour:
     key1: {r: 0, g: 0.7445178, b: 1, a: 1}
     key2: {r: 1, g: 0.9372188, b: 0, a: 0}
     key3: {r: 0.9466404, g: 1, b: 0, a: 0}
-    key4: {r: 0.13918382, g: 0.6226415, b: 0.10279457, a: 0}
+    key4: {r: 0.101960786, g: 0.62352943, b: 0.15295218, a: 0}
     key5: {r: 0.025094317, g: 0.3584906, b: 0, a: 0}
-    key6: {r: 1, g: 1, b: 1, a: 0}
+    key6: {r: 0.0029133132, g: 0.3018868, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 5397
     ctime1: 15806
     ctime2: 21395
     ctime3: 23708
-    ctime4: 28720
-    ctime5: 58789
+    ctime4: 28913
+    ctime5: 57825
     ctime6: 64957
     ctime7: 0
     atime0: 0
